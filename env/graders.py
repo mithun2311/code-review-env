@@ -34,4 +34,11 @@ def grade(comments, expected_issues):
 
     final_score = max(total_score - penalty, 0)
 
-    return min(final_score / len(expected_issues), 1.0)
+    score = final_score / len(expected_issues)
+
+    if score >= 1.0:
+        score = 0.99
+    elif score <= 0.0:
+        score = 0.01
+
+    return score
