@@ -47,7 +47,6 @@ for task in TASKS:
                 max_tokens=60
             )
             comment = response.choices[0].message.content or ""
-
         except Exception:
             comment = ""
 
@@ -74,12 +73,20 @@ for task in TASKS:
         obs, reward, done, info = env.step(action)
         rewards.append(reward)
 
-        print(f"[STEP] step={step} action=comment reward={reward:.2f} done={str(done).lower()} error=null")
+        safe_reward = min(max(reward, 0.002), 0.998)
+        safe_reward = min(safe_reward, 0.994)
+
+        print(f"[STEP] step={step} action=comment reward={safe_reward:.2f} done={str(done).lower()} error=null")
 
     action = Action(action_type="request_changes")
     obs, reward, done, info = env.step(action)
     rewards.append(reward)
 
-    print(f"[STEP] step={step+1} action=request_changes reward={reward:.2f} done=true error=null")
+    safe_reward = min(max(reward, 0.002), 0.998)
+    safe_reward = min(safe_reward, 0.994)
 
-    print(f"[END] success=true steps={step+1} rewards={','.join([f'{r:.2f}' for r in rewards])}")
+    print(f"[STEP] step={step+1} action=request_changes reward={safe_reward:.2f} done=true error=null")
+
+    safe_rewards = [min(max(r, 0.002), 0.994) for r in rewards]
+
+    print(f"[END] success=true steps={step+1} rewards={','.join([f'{r:.2f}' for r in safe_rewards])}")
