@@ -33,12 +33,12 @@ def grade(comments, expected_issues):
 
     score = final_score / len(expected_issues)
 
-    MIN_VALID_SCORE = 0.1
-    MAX_VALID_SCORE = 0.9
+    MIN_VALID_SCORE = 0.01
+    MAX_VALID_SCORE = 0.99
 
-    if score >= MAX_VALID_SCORE:
+    if score >= 1.00:
         score = MAX_VALID_SCORE
-    elif score <= MIN_VALID_SCORE:
+    elif score <= 0.00:
         score = MIN_VALID_SCORE
 
     return score
