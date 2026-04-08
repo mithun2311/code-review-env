@@ -12,11 +12,9 @@ def grade(comments, expected_issues):
         for c in comments:
             c_lower = c.lower()
 
-            # detection
             if issue_type in c_lower:
                 found = True
 
-                # explanation quality
                 if any(word in c_lower for word in ["because", "issue", "problem", "risk", "vulnerability"]):
                     explanation = True
 
@@ -27,7 +25,6 @@ def grade(comments, expected_issues):
         if explanation:
             total_score += 0.5 * weight
 
-    # false positive penalty
     for c in comments:
         if not any(issue["type"] in c.lower() for issue in expected_issues):
             penalty += 0.1
@@ -36,9 +33,12 @@ def grade(comments, expected_issues):
 
     score = final_score / len(expected_issues)
 
-    if score >= 1.0:
-        score = 0.99
-    elif score <= 0.0:
-        score = 0.01
+    MIN_VALID_SCORE = 0.002
+    MAX_VALID_SCORE = 0.998
+
+    if score >= MAX_VALID_SCORE:
+        score = MAX_VALID_SCORE
+    elif score <= MIN_VALID_SCORE:
+        score = MIN_VALID_SCORE
 
     return score
