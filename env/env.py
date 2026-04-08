@@ -39,8 +39,8 @@ class CodeReviewEnv:
 
         elif action.action_type in ["approve", "request_changes"]:
             score = grade(self.comments, self.task["expected_issues"])
-            MIN_VALID_SCORE = 0.1
-            MAX_VALID_SCORE = 0.9
+            MIN_VALID_SCORE = 0.01
+            MAX_VALID_SCORE = 0.99
             reward = min(max(score, MIN_VALID_SCORE), MAX_VALID_SCORE)
             done = True
 
